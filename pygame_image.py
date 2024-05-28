@@ -7,6 +7,15 @@ WIDTH, HEIGHT = 1600, 900
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+class BGMPlayer:
+    def __init__(self, filename):
+        self.filename = filename
+        pg.mixer.init(frequency=44100)  # 初期設定
+        pg.mixer.music.load(self.filename)  # 音楽ファイルの読み込み
+
+    def play(self, loops=-1):
+        pg.mixer.music.play(loops)  # 音楽の再生回数（デフォルトはループ再生）
+
 class Score:
     """
     正解の工科トンを選択した場合スコアを加算するクラス
@@ -37,7 +46,7 @@ def efect(screen):
     正解のこうかとんとフェイクのこうかとんをランダムで表示する機能
     """
     happy = pg.image.load("fig/6.png") #正解のこうかとんの読み込み
-    Ans_rct = [random.randint(0, 1600), random.randint(0, 900)] #ランダムに座標を設定
+    Ans_rct = [random.randint(50, 1550), random.randint(50, 850)] #ランダムに座標を設定
     #Ans_img = pg.transform.rotozoom(happy, 10, random.uniform(0.5, 1.5))
     #Ans_ex_img = pg.transform.rotozoom(happy, 10, 2.0)
     miss_img_lst = ["fig/0.png", "fig/1.png", "fig/2.png", "fig/3.png", "fig/4.png", "fig/5.png", "fig/7.png", "fig/8.png", "fig/9.png"]
@@ -48,8 +57,8 @@ def efect(screen):
     for i in range(len(miss_img_lst)):
         # screen.blit(pg.image.load(miss_img_lst[i]), [random.randint(0, 1600), random.randint(0, 900)])
         if i<len(miss_img_lst):
-            rct_x.append(random.randint(0,1600)) #ランダムに座標を追加
-            rct_y.append(random.randint(0,900))
+            rct_x.append(random.randint(50,1550)) #ランダムに座標を追加
+            rct_y.append(random.randint(50,850))
                          
         else:
             pass
@@ -120,6 +129,9 @@ def main():
     kk_rct.center = 300,200
     kk_rct.center = 300,200 #こうかとんの初期位置、表示　->こうかとんをランダムで生成する関数の実装後、削除
     
+    # BGMプレイヤーを初期化して再生
+    bgm_player = BGMPlayer("Numbers Don't Lie.mp3")
+    bgm_player.play()
     score = Score()
     time = Time()
     x=0 #判定の初期位置
